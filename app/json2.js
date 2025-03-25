@@ -1,4 +1,3 @@
-alert('here');
 /*
     http://www.JSON.org/json2.js
     2008-06-04
@@ -161,6 +160,7 @@ alert('here');
     test, toJSON, toString
 */
 
+this.JSON = undefined // to make sure we use this implementation
 if (!this.JSON) {
 
 // Create a JSON object only if one does not already exist. We create the

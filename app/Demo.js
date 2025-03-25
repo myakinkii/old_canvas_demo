@@ -71,13 +71,13 @@ Demo.prototype.exportConf = function () {
 	var i = 1;
 	var json = '{';
 	for (var attr in this.config) { json += attr + ':' + this.config[attr] + ',' + (i % 3 == 0 ? '\n' : ''); i++ }
-	getId('config').value = _n(json, 1) + '}';
+	getId('config').value = JSON.stringify(this.config)
 }
 
 Demo.prototype.importConf = function () {
 	var config = getId('config').value;
 	//alert(config)
-	this.config = eval('(' + config + ')');
+	this.config = JSON.parse(config)
 	clearInterval(this.regen);
 	this.regen = interval(this, this.anim, this.config.redraw);
 	getTag('body').replaceChild(this.controls(), getId('controls'));

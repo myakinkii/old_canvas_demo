@@ -1,0 +1,12 @@
+body
+{font: 12pt Arial; color: #000;text-align:center}
+div.controls
+{position:relative;float:left;margin-left:10px;margin-top:5px;}
+canvas
+{ border: 2px solid black;position:relative;float:left;;margin:5px}
+/*
+canvas
+{ border: 2px solid black;position:relative;margin:0px auto }
+*/
+div.field
+{position:relative;border:1px dashed #777;margin:0px auto;margin-bottom:2px;width:200px;}

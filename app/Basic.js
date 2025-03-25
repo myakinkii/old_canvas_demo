@@ -79,6 +79,8 @@ function crInput(size, text, id, cN, events, context) {
 }
 
 function crRadio(checked, id, value, events, context) {
+	[ id, value, events, context ] = Array.prototype.slice.call(arguments)
+	checked = !!value
 	var r = crEl('input', id, null, null, events, context)
 	r.type = 'radio';
 	r.value = value;

@@ -1,7 +1,14 @@
 function Demo() {
 	this.size = 650;
-	getTag('body').appendChild(crCanvas('canvas', this.size, this.size, [crText('Use better browser e.g '), crA('Opera', 'http://opera.com'), crText(', '), crA('FireFox', 'http://mozilla.org'), crText(', or '), crA('Safari', 'http://apple.com')]));
-	this.canvas = getId('canvas');
+	render.call(this, ['canvas', 'idCanvas', this.size, this.size, [
+		'/Use better browser e.g ',
+		'link', 'Opera', 'http://opera.com',
+		'/, ',
+		'link', 'FireFox', 'http://mozilla.org',
+		'/, or ',
+		'link', 'Safari', 'http://apple.com'
+	]], getTag('body'))
+	this.canvas = getId('idCanvas');
 	if (this.canvas.getContext)
 		this.init();
 }
@@ -14,8 +21,97 @@ Demo.prototype.init = function () {
 	this.center = this.size / 2;
 	this.config = { redraw: 33, R: 75, r: 5, D: 100, d: 20, w1: 10, w2: 2, count: 10, fill: 1, showLines: 0, shape: 1, angls: 3, pulse: 1, color: 1, alpha: 1, lw: 1, clear: 1 }
 	this.vars = { psi: 0, fi: 0, x: 0, y: 0, x1: 0, y1: 0, r: 0, red: 0, green: 0, blue: 0, alpha: 0, lw: 0, i: 0, j: 0 };
-	getTag('body').appendChild(this.controls());
+	this.renderControls(getTag('body'))
+	// getTag('body').appendChild(this.controls());
 	this.regen = interval(this, this.anim, this.config.redraw);
+}
+
+Demo.prototype.renderControls = function (parent) {
+	render.call(this, ['div', this.id, this.id, [
+		'.field', [
+			'/Shape.', 'br',
+			'radio', this.config.shape ? 1 : 0, 'shape1', 1, { 'onclick': this.change },
+			'/Circle',
+			'radio', this.config.shape ? 0 : 1, 'shape0', 0, { 'onclick': this.change },
+			'/Polygon'
+		],
+		'.field', [
+			'/Angles',
+			'input', 5, this.config.angls, 'angls', null, { 'onchange': this.change }
+		],
+		'.field', [
+			'/Show Lines',
+			'check', this.config.showLines, 'showLines', { 'onclick': this.change }
+		],
+		'.field', [
+			'/Redraw rate (ms)',
+			'input', 5, this.config.redraw, 'redraw', null, { 'onchange': this.change }
+		],
+		'.field', [
+			'/Greater Radius',
+			'input', 5, this.config.R, 'R', null, { 'onchange': this.change }
+		],
+		'.field', [
+			'/Lesser Radius',
+			'input', 5, this.config.r, 'r', null, { 'onchange': this.change }
+		],
+		'.field', [
+			'/Greater orbit',
+			'input', 5, this.config.D, 'D', null, { 'onchange': this.change }
+		],
+		'.field', [
+			'/Lesser orbit',
+			'input', 5, this.config.d, 'd', null, { 'onchange': this.change }
+		],
+		'.field', [
+			'/Omega1',
+			'input', 5, this.config.w1, 'w1', null, { 'onchange': this.change }
+		],
+		'.field', [
+			'/Omega2',
+			'input', 5, this.config.w2, 'w2', null, { 'onchange': this.change }
+		],
+		'.field', [
+			'/Shapes count',
+			'input', 5, this.config.count, 'count', null, { 'onchange': this.change }
+		],
+		'.field', [
+			'/Draw style', 'br',
+			'radio', this.config.fill ? 1 : 0, 'fill1', 1, { 'onclick': this.change },
+			'/Fill',
+			'radio', this.config.fill ? 0 : 1, 'fill0', 0, { 'onclick': this.change },
+			'/Stroke'
+		],
+		'.field', [
+			'/Pulse radius',
+			'check', this.config.pulse, 'pulse', { 'onclick': this.change }
+		],
+		'.field', [
+			'/Color',
+			'check', this.config.color, 'color', { 'onclick': this.change }
+		],
+		'.field', [
+			'/Alpha',
+			'check', this.config.alpha, 'alpha', { 'onclick': this.change }
+		],
+		'.field', [
+			'/Lineweight',
+			'check', this.config.lw, 'lw', { 'onclick': this.change }
+		],
+		'.field', [
+			'/Clear previous frames',
+			'check', this.config.clear, 'clear', { 'onclick': this.change }
+		],
+		'.field', [
+			'button', 'Clear All', null, null, { 'onclick': this.clearAll }
+		],
+		'.field', [
+			'button', 'Export conf', null, null, { 'onclick': this.exportConf },
+			'button', 'Import conf', null, null, { 'onclick': this.importConf },
+			'br',
+			'textarea', 20, 6, null, 'config', null, 'hard'
+		]
+	]], parent)
 }
 
 Demo.prototype.controls = function () {
@@ -80,7 +176,9 @@ Demo.prototype.importConf = function () {
 	this.config = JSON.parse(config)
 	clearInterval(this.regen);
 	this.regen = interval(this, this.anim, this.config.redraw);
-	getTag('body').replaceChild(this.controls(), getId('controls'));
+	// getTag('body').replaceChild(this.controls(), getId('controls'));
+	getTag('body').removeChild()
+	this.renderControls(getTag('body'))
 }
 
 Demo.prototype.clearAll = function () {

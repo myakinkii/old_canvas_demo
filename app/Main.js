@@ -1,7 +1,8 @@
 function Main() {
     try {
+        includeJs('./render.js');
         includeJs('./Demo.js');
-        this.mech = new Demo();
+        var demo = new Demo();
     }
     catch (e) {
         alert(e.message);
